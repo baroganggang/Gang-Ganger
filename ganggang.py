@@ -1,4 +1,4 @@
-from random import randint
+import random
 
 x = ["Bao on komea","Toivo on homo","Davut on homo"]
 
