@@ -23,18 +23,16 @@ tube_height2 = randint(100,400)
 tube_height3 = randint(100,400)
 tube_height4 = randint(100,400)
 
+score=0
 
 TUBE_VELOCITY =3
-
-
-
-
 player_velocity = 0
 GRAVITAATIO = 0.5
 
 naytto = pygame.display.set_mode((game_width, game_height))
 pygame.display.set_caption("BARO BASO BOZO")
 
+score_font=pygame.font.SysFont('freesansbold.ttf', 30)
 font1 = pygame.font.SysFont('freesansbold.ttf', 50)
 text1 = font1.render('YOU LOST', True, (0,0,0))
 textRect1 = text1.get_rect(center=(320,240))
@@ -86,7 +84,20 @@ while True:
         tube_height4 = randint(100,400)
         tube_x4 = game_width
 
+#
+    if tube_x1 == PLAYER_X+1:
+        score+=1
+    if tube_x2 == PLAYER_X+1:
+        score+=1
+    if tube_x3 == PLAYER_X+1:
+        score+=1
+    if tube_x4 == PLAYER_X+1:
+        score+=1
 
+    text3 = score_font.render(f"Score: {str(score)}", True, (0,0,0))
+    textRect3 = text3.get_rect(center=(80,40))
+    naytto.blit(text3, textRect3)
+#
 
     for event in pygame.event.get():        
         if event.type == pygame.QUIT:
@@ -94,8 +105,11 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key==pygame.K_SPACE:
                 player_velocity =-12
-    
-        
+            if event.key == pygame.K_SPACE and game_over:
+                game_over=False
+                score=0
+                player_velocity=0
+                
 
     if not game_over:
             player_velocity += GRAVITAATIO
@@ -111,14 +125,7 @@ while True:
         naytto.blit(text2, textRect2)
 
 
-    if player.colliderect(tube1):
-        game_over = True
-    if player.colliderect(tube2):
-        game_over = True
-    if player.colliderect(tube3):
-        game_over = True
-    if player.colliderect(tube_4):
-        game_over = True
+    
     draw()
 
 
