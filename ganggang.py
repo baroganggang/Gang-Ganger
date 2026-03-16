@@ -18,25 +18,24 @@ tube_x4=game_width+450
 
 TUBES_GAP = 150
 TUBE_WIDTH = 50
-tube_height1 = randint(100,400)
-tube_height2 = randint(100,400)
-tube_height3 = randint(100,400)
-tube_height4 = randint(100,400)
+tube_height1 = randint(100,300)
+tube_height2 = randint(100,300)
+tube_height3 = randint(100,300)
+tube_height4 = randint(100,300)
 
 score = 0
-
+best_score = 0
 TUBE_VELOCITY =3
 player_velocity = 0
 GRAVITAATIO = 0.5
 
+#tekstien kirjoittaminen
 naytto = pygame.display.set_mode((game_width, game_height))
 pygame.display.set_caption("BARO BASO BOZO")
-
 score_font=pygame.font.SysFont('freesansbold.ttf', 30)
 font1 = pygame.font.SysFont('freesansbold.ttf', 50)
 text1 = font1.render('YOU LOST', True, (0,0,0))
 textRect1 = text1.get_rect(center=(320,240))
-
 text2 = font1.render('PRESS R TO RESTART', True, (0,0,0))
 textRect2 = text2.get_rect(center=(320,200))
 
@@ -72,16 +71,16 @@ while True:
         tube_x4 -= TUBE_VELOCITY
 
     if tube_x1 <= -50:
-        tube_height1 = randint(100,400)
+        tube_height1 = randint(100,300)
         tube_x1 = game_width
     if tube_x2 <= -50:
-        tube_height2 = randint(100,400)
+        tube_height2 = randint(100,300)
         tube_x2 = game_width
     if tube_x3 <= -50:
-        tube_height3 = randint(100,400)
+        tube_height3 = randint(100,300)
         tube_x3 = game_width
     if tube_x4 <= -50:
-        tube_height4 = randint(100,400)
+        tube_height4 = randint(100,300)
         tube_x4 = game_width
 
     if tube_x1 == PLAYER_X+1:
@@ -113,12 +112,15 @@ while True:
                 tube_x2= game_width+150
                 tube_x3= game_width+300
                 tube_x4=game_width+450
-                tube_height1 = randint(100,400)
-                tube_height2 = randint(100,400)
-                tube_height3 = randint(100,400)
-                tube_height4 = randint(100,400)
+                tube_height1 = randint(100,300)
+                tube_height2 = randint(100,300)
+                tube_height3 = randint(100,300)
+                tube_height4 = randint(100,300)
                 score = 0
-
+                
+    text4 = score_font.render(f"Best Score: {str(best_score)}", True, (0,0,0))
+    textRect4 = text4.get_rect(center=(80,60))
+    naytto.blit(text4, textRect4)
 
     if not game_over:
             player_velocity += GRAVITAATIO
@@ -139,6 +141,10 @@ or player.colliderect(tube2) or player.colliderect(inv_tube2) \
 or player.colliderect(tube3) or player.colliderect(inv_tube3) \
 or player.colliderect(tube_4) or player.colliderect(inv_tube4):
         game_over = True
+
+    if score > best_score:
+        best_score = score
+    
     draw()
 
 
