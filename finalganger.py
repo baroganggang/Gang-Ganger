@@ -64,10 +64,10 @@ def reset_game():
     player_velocity = 0
     TUBE_VELOCITY = 3
 
-    tube_x1 = game_width
-    tube_x2 = game_width + 150
-    tube_x3 = game_width + 300
-    tube_x4 = game_width + 450
+    tube_x1 = 690/4*3+game_width
+    tube_x2 = 690/4*2+game_width
+    tube_x3 = 690/4+game_width
+    tube_x4 = 690+game_width
 
     tube_height1 = randint(100,300)
     tube_height2 = randint(100,300)
@@ -157,12 +157,13 @@ while True:
                 
 #gravitaatio
     if not game_over:
-            player_velocity += GRAVITAATIO
+        player_velocity += GRAVITAATIO
+        if player.top > 0:
             player.y += player_velocity
+        else:
+            game_over=True
 
 #losing conditions
-    if player.top == -35:
-        game_over = True 
     if player.bottom >= game_height:
         game_over = True       
 
@@ -181,10 +182,3 @@ or player.colliderect(tube_4) or player.colliderect(inv_tube4):
     if game_over and score > best_score:
         best_score = score
     draw()
-
-    
-
-            
-
-        
-       
