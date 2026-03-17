@@ -18,7 +18,7 @@ tube_x1 = 690/4*3+game_width
 tube_x2 = 690/4*2+game_width
 tube_x3 = 690/4+game_width
 tube_x4 = 690+game_width
-
+    
 TUBES_GAP = 150
 TUBE_WIDTH = 50
 tube_height1 = randint(100,300)
