@@ -7,21 +7,22 @@ game_height = 480
 
 PLAYER_X = 150
 player_y = 200
-player_width = 35
-player_height = 35
+player_width = 30
+player_height = 30
+jump_hight=9
 game_over = False
 
-tube_x1 = 250
-tube_x2= 400
-tube_x3= 550
-tube_x4=700
+tube_x1 = 690/4*3+game_width
+tube_x2 = 690/4*2+game_width
+tube_x3 = 690/4+game_width
+tube_x4 = 690+game_width
 
 TUBES_GAP = 150
 TUBE_WIDTH = 50
-tube_height1 = randint(100,400)
-tube_height2 = randint(100,400)
-tube_height3 = randint(100,400)
-tube_height4 = randint(100,400)
+tube_height1 = randint(100,300)
+tube_height2 = randint(100,300)
+tube_height3 = randint(100,300)
+tube_height4 = randint(100,300)
 
 score=0
 
@@ -52,13 +53,13 @@ def draw():
     
 while True:
     clock.tick(60)
-    naytto.fill((0,30,150))
+    naytto.fill((30,60,200))
 
     #törnien piirtäminen
     tube1 = pygame.draw.rect(naytto, (0,255,0), (tube_x1, 0, TUBE_WIDTH, tube_height1))
     tube2  = pygame.draw.rect(naytto, (0,255,0), (tube_x2, 0, TUBE_WIDTH, tube_height2))
     tube3  = pygame.draw.rect(naytto, (0,255,0), (tube_x3, 0, TUBE_WIDTH, tube_height3))
-    tube_4  = pygame.draw.rect(naytto, (0,255,0), (tube_x4, 0, TUBE_WIDTH, tube_height4))
+    tube4  = pygame.draw.rect(naytto, (0,255,0), (tube_x4, 0, TUBE_WIDTH, tube_height4))
 
     inv_tube1 = pygame.draw.rect(naytto, (0,255,0),(tube_x1, tube_height1+TUBES_GAP, TUBE_WIDTH, game_height-TUBES_GAP-tube_height1) )
     inv_tube2 = pygame.draw.rect(naytto, (0,255,0),(tube_x2, tube_height2+TUBES_GAP, TUBE_WIDTH, game_height-TUBES_GAP-tube_height2) )
@@ -72,16 +73,16 @@ while True:
     tube_x4 -= TUBE_VELOCITY
 
     if tube_x1 <= -50:
-        tube_height1 = randint(100,400)
+        tube_height1 = randint(100,300)
         tube_x1 = game_width
     if tube_x2 <= -50:
-        tube_height2 = randint(100,400)
+        tube_height2 = randint(100,300)
         tube_x2 = game_width
     if tube_x3 <= -50:
-        tube_height3 = randint(100,400)
+        tube_height3 = randint(100,300)
         tube_x3 = game_width
     if tube_x4 <= -50:
-        tube_height4 = randint(100,400)
+        tube_height4 = randint(100,300)
         tube_x4 = game_width
 
 #
@@ -94,26 +95,45 @@ while True:
     if tube_x4 == PLAYER_X+1:
         score+=1
 
-    text3 = score_font.render(f"Score: {str(score)}", True, (0,0,0))
+    text3 = score_font.render(f"Score: {str(score)}", True, (255,255,255))
     textRect3 = text3.get_rect(center=(80,40))
     naytto.blit(text3, textRect3)
 #
+
+    if player.colliderect(tube1) or player.colliderect(inv_tube1):
+        game_over = True
+    if player.colliderect(tube2) or player.colliderect(inv_tube2):
+        game_over = True
+    if player.colliderect(tube3) or player.colliderect(inv_tube3):
+        game_over = True
+    if player.colliderect(tube4) or player.colliderect(inv_tube4):
+        game_over = True
 
     for event in pygame.event.get():        
         if event.type == pygame.QUIT:
             exit()
         if event.type == pygame.KEYDOWN:
             if event.key==pygame.K_SPACE:
-                player_velocity =-12
-            if event.key == pygame.K_SPACE and game_over:
+                player_velocity =-jump_hight
+            if event.key == pygame.K_r:
                 game_over=False
                 score=0
                 player_velocity=0
+                player = pygame.Rect(PLAYER_X, player_y, player_width, player_height)
+                TUBE_VELOCITY=3
+                tube_x1 = 690/4*3 + game_width
+                tube_x2= 690/4*2 + game_width
+                tube_x3= 690/4 + game_width
+                tube_x4=690 + game_width
                 
 
     if not game_over:
-            player_velocity += GRAVITAATIO
+        player_velocity += GRAVITAATIO
+        
+        if not player_y<-35:
             player.y += player_velocity
+        else:
+            player_y = -34
     
     if player.bottom >= game_height:
         game_over = True       
@@ -123,15 +143,5 @@ while True:
         TUBE_VELOCITY=0
         naytto.blit(text1, textRect1)
         naytto.blit(text2, textRect2)
-
-
     
     draw()
-
-
-    
-
-            
-
-        
-       
